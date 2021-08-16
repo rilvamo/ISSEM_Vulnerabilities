@@ -4,8 +4,8 @@
 
 Current auth token uses random function which can be determinisitic. And this can be predictable. This can be strengthened by using urandom function.
 
-<h3>#2 Same Token Generation</h3>
+<h2>#2 Same Token Generation</h2>
 
-<h4>#3 Cleartext data</h4>
+<h2>#3 Cleartext data</h2>
 
-<h5>#4 Denial of Service</h5>
+<h2>#4 Denial of Service</h2>
