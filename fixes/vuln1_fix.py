@@ -1,3 +1,4 @@
+#Fix 1 - This fixes vulnerability 1 by strengthening the Auth token by using Pyhton's urandom library.
 import threading
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -10,7 +11,7 @@ import os
 import errno
 import random
 import string
-import secrets
+from os import urandom
 
 alphabet = string.ascii_letters + string.digits
 
@@ -62,7 +63,7 @@ class SmartNetworkThermometer (threading.Thread) :
             if len(cs) == 2 : #should be either AUTH or LOGOUT
                 if cs[0] == "AUTH":
                     if cs[1] == "!Q#E%T&U8i6y4r2w" :
-                        self.tokens.append(''.join(secrets.choice(alphabet) for i in range(8)))
+                        self.tokens.append(urandom(16).hex())
                         self.serverSocket.sendto(self.tokens[-1].encode("utf-8"), addr)
                         #print (self.tokens[-1])
                 elif cs[0] == "LOGOUT":

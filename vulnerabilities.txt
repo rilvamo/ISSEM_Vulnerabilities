@@ -1,0 +1,11 @@
+Vulnerabilities
+
+#1 Brute Force Auth Tokens
+
+Current auth token uses random function which can be determinisitic. And this can be predictable. This can be strengthened by using urandom function.
+
+#2 Same Token Generation
+
+#3 Cleartext data
+
+#4 Denial of Service
