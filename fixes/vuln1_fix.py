@@ -1,4 +1,5 @@
 #Fix 1 - This fixes vulnerability 1 by strengthening the Auth token by using Pyhton's urandom library.
+# lines modified - 67
 import threading
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation

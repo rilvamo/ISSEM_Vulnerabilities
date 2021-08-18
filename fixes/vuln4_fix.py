@@ -1,5 +1,7 @@
-#Fix 1 - This fixes vulnerability 2 by validating if token is not created before by checking the token list
-#Fix lines - line numbers 64-68
+#Fix 4 - Tracks number of connections by sourceIp and validating if it is 
+#more than the allowed connection limit (limit = 5).
+#linex modified - 69-77
+
 import threading
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -12,6 +14,8 @@ import os
 import errno
 import random
 import string
+
+userIpConnections = {}
 
 class SmartNetworkThermometer (threading.Thread) :
     open_cmds = ["AUTH", "LOGOUT"]
@@ -61,15 +65,16 @@ class SmartNetworkThermometer (threading.Thread) :
             if len(cs) == 2 : #should be either AUTH or LOGOUT
                 if cs[0] == "AUTH":
                     if cs[1] == "!Q#E%T&U8i6y4r2w" :
-                        newToken = False
-                        while (newToken == False):
-                            token = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
-                            if token in self.tokens:
-                                newToken == False
-                            else:
-                                newToken == True
-                                self.tokens.append(token)
-                        self.serverSocket.sendto(self.tokens[-1].encode("utf-8"), addr)
+                        token = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
+                        try:
+                            userIpConnections[addr] += 1
+                        except Exception as e:
+                            userIpConnections[addr] = 1
+                        if(userIpConnections[addr]>5):
+                            self.serverSocket.sendto("maximum connections from IP: " + str(addr), addr)
+                        else:
+                            self.tokens.append(token)
+                            self.serverSocket.sendto(self.tokens[-1].encode("utf-8"), addr)
                         #print (self.tokens[-1])
                 elif cs[0] == "LOGOUT":
                     if cs[1] in self.tokens :
